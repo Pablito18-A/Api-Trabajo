@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head'); %>
+</head>
+<body class="container">
+
+    <header>
+        <%- include('../partials/header'); %>
+    </header>
+
+    <main>
+        <div class="jumbotron">
+            <h1>Clientes</h1>
+                <table id="clientes" class="table table-striped">
+                    <thead>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Telefono</th>
+                        <th>Acciones</th>
+                    </thead>
+                    <tbody>
+                        <% clientes.forEach(function(cliente) { %>
+                            <tr>
+                                <td><%=cliente.nombre%></td>
+                                <td><%=cliente.email%></td>
+                                <td><%=cliente.telefono%></td>
+                                <td>
+                                    <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modalDetalle" onclick="modalVer('<%=cliente.nombre%>', '<%= cliente.email%>','<%=cliente.telefono%>')">ver detalle</button>
+                                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalEditar" onclick="modalEditar('<%=cliente.nombre%>', '<%= cliente.email%>','<%=cliente.telefono%>')">editar</button>
+                                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalEliminar" onclick="modalEliminar('<%=cliente.nombre%>', '<%= cliente.email%>','<%=cliente.telefono%>')">eliminar</button>
+                                </td>
+                            </tr>   
+
+                        <% }); %>
+                    </tbody>
+                </table>
+        </div>
+
+        <!-- Modal detalle -->
+        <div id="modalDetalle" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+        
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Detalles del cliente</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="/api/v1/clientes" method="POST">
+                            <div class="mb-3 mt-3">
+                                <label for="name" class="form-label">Nombre:</label>
+                                <input type="text" class="form-control" id="nombreV" placeholder="Nombre completo"
+                                    name="nombrev" readonly>
+                            </div>
+                            <div class="mb-3 mt-3">
+                                <label for="email" class="form-label">Email:</label>
+                                <input type="email" class="form-control" id="emailV" placeholder="example@email.com"
+                                    name="email" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label for="number" class="form-label">Telefono:</label>
+                                <input type="number" class="form-control" id="telefonoV" placeholder="312 3456789"
+                                    name="telefono" readonly>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+        
+            </div>
+        </div>
+        
+        <!-- modal editar-->
+        
+        <div id="modalEditar" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+        
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Detalles del cliente</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="/api/v1/clientes" method="POST">
+                            <div class="mb-3 mt-3">
+                                <label for="name" class="form-label">Nombre:</label>
+                                <input type="text" class="form-control" id="nombreE" placeholder="Nombre completo"
+                                    name="nombrev">
+                            </div>
+                            <div class="mb-3 mt-3">
+                                <label for="email" class="form-label">Email:</label>
+                                <input type="email" class="form-control" id="emailE" placeholder="example@email.com"
+                                    name="email" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label for="number" class="form-label">Telefono:</label>
+                                <input type="number" class="form-control" id="telefonoE" placeholder="312 3456789"
+                                    name="telefono">
+                            </div>
+                        </form>
+                        <button class="btn btn-info" data-bs-dismiss="modal" onclick="actualizarDatosBD()">Actualizar</button>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+        
+            </div>
+        </div>
+
+        <!-- modal eliminar -->
+        
+        <div id="modalEliminar" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+        
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Seguro que deseas eliminar este cliente?</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="/api/v1/clientes" method="POST">
+                            <div class="mb-3 mt-3">
+                                <label for="name" class="form-label">Nombre:</label>
+                                <input type="text" class="form-control" id="nombreD" placeholder="Nombre completo"
+                                    name="nombrev" readonly>
+                            </div>
+                            <div class="mb-3 mt-3">
+                                <label for="email" class="form-label">Email:</label>
+                                <input type="email" class="form-control" id="emailD" placeholder="example@email.com"
+                                    name="email" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label for="number" class="form-label">Telefono:</label>
+                                <input type="number" class="form-control" id="telefonoD" placeholder="312 3456789"
+                                    name="telefono" readonly>
+                            </div>
+                        </form>
+                        <button class="btn btn-danger" data-bs-dismiss="modal" onclick="eliminarDatos()">Eliminar</button>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+        
+            </div>
+        </div>
+
+    </main>
+
+    <footer>
+        <%- include('../partials/footer'); %>
+    </footer>
+
+    <script>
+        function modalVer(nombre, email, telefono){
+            document.getElementById('modalDetalle').style.display = 'block';
+            document.getElementById('nombreV').value = nombre;
+            document.getElementById('emailV').value = email;
+            document.getElementById('telefonoV').value = telefono;
+     
+        }
+
+
+       function modalEditar(nombre, email, telefono){
+            document.getElementById('modalEditar').style.display = 'block';
+            document.getElementById('nombreE').value = nombre;
+            document.getElementById('emailE').value = email;
+            document.getElementById('telefonoE').value = telefono;
+        }
+
+        async function actualizarDatosBD() {
+            const nombreNuevo = document.getElementById('nombreE').value;
+            const email = document.getElementById('emailE').value; 
+            const telefonoNuevo = document.getElementById('telefonoE').value;
+
+            try {
+                const respuesta = await fetch(`/clientes/${email}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json' 
+                    },
+                    body: JSON.stringify({ 
+                        nombre: nombreNuevo, 
+                        telefono: telefonoNuevo 
+                    }) 
+                });
+            
+                if (respuesta.ok) {
+                    alert('¡Datos actualizados con éxito!');
+                    window.location.reload();
+                } else {
+                    alert('Error en el servidor al intentar actualizar.');
+                }
+            } catch (error) {
+                console.error('Error de conexión:', error);
+            }
+        }
+
+        function modalEliminar(nombre, email, telefono){
+            document.getElementById('modalEliminar').style.display = 'block';
+            document.getElementById('nombreD').value = nombre;
+            document.getElementById('emailD').value = email;
+            document.getElementById('telefonoD').value = telefono;
+        }
+
+        async function eliminarDatos() {
+            const nombreEliminar = document.getElementById('nombreD').value;
+            const emailEliminar = document.getElementById('emailD').value; 
+            const telefonoEliminar = document.getElementById('telefonoD').value;
+
+            try {
+                const respuesta = await fetch(`/clientes/${emailEliminar}`, {
+                    method: 'DELETE'
+                })
+                if (respuesta.ok) {
+                    alert('¡Datos eliminados con exito!');
+                    window.location.reload();
+                } else {
+                    alert('Error en el servidor al intentar eliminar los datos.');
+                }
+            } catch (error) {
+                console.error('error de conexion:', error);
+            }
+        }
+    </script>
+
+</body>
+</html>

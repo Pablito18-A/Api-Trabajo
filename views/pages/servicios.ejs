@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head'); %>
+</head>
+<body class="container">
+
+    <header>
+        <%- include('../partials/header'); %>
+    </header>
+
+    <main>
+
+        <div class="jumbotron">
+            <h1>Servicios</h1>
+                <table id="clientes" class="table table-striped">
+                    <thead>
+                        <th>Nombre</th>
+                        <th>descripcion</th>
+                        <th>Duracion</th>
+                        <th>Precio</th>
+                        <th>Categoria</th>
+                        <th>Acciones</th>
+                    </thead>
+                    <tbody>
+                        <% servicios.forEach(function(servicio) { %>
+                            <tr>
+                                <td><%=servicio.nombre%></td>
+                                <td><%=servicio.descripcion%></td>
+                                <td><%=servicio.duracionMinutos%></td>
+                                <td><%=servicio.precio%></td>
+                                <td><%=servicio.categoria%></td>
+                                <td class="d-flex gap-2">
+                                    <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modalVer" onclick="modalVer('<%=servicio.nombre%>', '<%=servicio.descripcion%>', '<%=servicio.duracionMinutos%>', '<%=servicio.precio%>', '<%=servicio.categoria%>')">ver detalle</button>
+                                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalEditar" onclick="modalEditar('<%=servicio.nombre%>', '<%=servicio.descripcion%>', '<%=servicio.duracionMinutos%>', '<%=servicio.precio%>', '<%=servicio.categoria%>')">editar</button>
+                                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalEliminar" onclick="modalEliminar('<%=servicio.nombre%>', '<%=servicio.descripcion%>', '<%=servicio.duracionMinutos%>', '<%=servicio.precio%>', '<%=servicio.categoria%>')">eliminar</button>
+                                </td>
+                            </tr>
+
+                        <% }); %>
+                    </tbody>
+                </table>
+        </div>
+
+        <!-- Modal detalle -->
+        <div id="modalVer" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+        
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Detalles de los servicios</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="/api/v1/clientes" method="POST">
+                            <div class="mb-3 mt-3">
+                                <label for="name" class="form-label">Nombre:</label>
+                                <input type="text" class="form-control" id="nombreV"
+                                    name="nombrev" readonly>
+                            </div>
+                            <div class="mb-3 mt-3">
+                                <label for="text" class="form-label">Descripcion:</label>
+                                <input type="text" class="form-control" id="descripcionV"
+                                    name="descripcion" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label for="number" class="form-label">Duracion:</label>
+                                <input type="number" class="form-control" id="duracionV"
+                                    name="duracion" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label for="number" class="form-label">Precio:</label>
+                                <input type="number" class="form-control" id="precioV"
+                                    name="precio" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Categoria:</label>
+                                <input type="text" class="form-control" id="categoriaV"
+                                    name="categoria" readonly>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+        
+            </div>
+        </div>
+
+        <!-- Modal editar -->
+        <div id="modalEditar" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+        
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Actualizar productos</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="/api/v1/clientes" method="POST">
+                            <div class="mb-3 mt-3">
+                                <label for="name" class="form-label">Nombre:</label>
+                                <input type="text" class="form-control" id="nombreE"
+                                    name="nombrev" readonly>
+                            </div>
+                            <div class="mb-3 mt-3">
+                                <label for="text" class="form-label">Descripcion:</label>
+                                <input type="text" class="form-control" id="descripcionE"
+                                    name="descripcion">
+                            </div>
+                            <div class="mb-3">
+                                <label for="number" class="form-label">Duracion:</label>
+                                <input type="number" class="form-control" id="duracionE"
+                                    name="duracion">
+                            </div>
+                            <div class="mb-3">
+                                <label for="number" class="form-label">Precio:</label>
+                                <input type="number" class="form-control" id="precioE"
+                                    name="precio">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Categoria:</label>
+                                <input type="text" class="form-control" id="categoriaE"
+                                    name="categoria">
+                            </div>
+                        </form>
+                        <button class="btn btn-info" data-bs-dismiss="modal" onclick="actualizarDatosBD()">Actualizar</button>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+        
+            </div>
+        </div>
+
+        <!-- Modal eliminar -->
+        <div id="modalEliminar" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+        
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Eliminar productos</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="/api/v1/clientes" method="POST">
+                            <div class="mb-3 mt-3">
+                                <label for="name" class="form-label">Nombre:</label>
+                                <input type="text" class="form-control" id="nombreD"
+                                    name="nombrev" readonly>
+                            </div>
+                            <div class="mb-3 mt-3">
+                                <label for="text" class="form-label">Descripcion:</label>
+                                <input type="text" class="form-control" id="descripcionD"
+                                    name="descripcion" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label for="number" class="form-label">Duracion:</label>
+                                <input type="number" class="form-control" id="duracionD"
+                                    name="duracion" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label for="number" class="form-label">Precio:</label>
+                                <input type="number" class="form-control" id="precioD"
+                                    name="precio" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Categoria:</label>
+                                <input type="text" class="form-control" id="categoriaD"
+                                    name="categoria" readonly>
+                            </div>
+                        </form>
+                        <button class="btn btn-danger" data-bs-dismiss="modal" onclick="eliminarDatos()">Eliminar</button>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+        
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <%- include('../partials/footer'); %>
+    </footer>
+
+    <script>
+        function modalVer(nombre, descripcion, duracionMinutos, precio, categoria) {
+            document.getElementById('nombreV').value = nombre;
+            document.getElementById('descripcionV').value = descripcion;
+            document.getElementById('duracionV').value = duracionMinutos;
+            document.getElementById('precioV').value = precio;
+            document.getElementById('categoriaV').value = categoria;
+        }
+
+        function modalEditar(nombre, descripcion, duracionMinutos, precio, categoria) {
+            document.getElementById('nombreE').value = nombre;
+            document.getElementById('descripcionE').value = descripcion;
+            document.getElementById('duracionE').value = duracionMinutos;
+            document.getElementById('precioE').value = precio;
+            document.getElementById('categoriaE').value = categoria;
+        }
+
+        async function actualizarDatosBD() {
+            const nombre = document.getElementById('nombreE').value;
+            const descripcionNuevo = document.getElementById('descripcionE').value;
+            const duracionNuevo = document.getElementById('duracionE').value;
+            const precioNuevo = document.getElementById('precioE').value;
+            const categoriaNuevo = document.getElementById('categoriaE').value;
+
+            try {
+                const respuesta = await fetch(`/servicios/${nombre}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        nombre: nombre,
+                        descripcion: descripcionNuevo,
+                        duracionMinutos: duracionNuevo,
+                        precio: precioNuevo,
+                        categoria: categoriaNuevo
+                    })
+                });
+                if (respuesta.ok) {
+                        alert('¡Datos actualizados con éxito!');
+                        window.location.reload();
+                    } else {
+                        alert('Error en el servidor al intentar actualizar.');
+                    }
+            } catch (error) {
+                console.error('Error de conexión:', error);
+            }
+        }
+
+        function modalEliminar(nombre, descripcion, duracionMinutos, precio, categoria) {
+            document.getElementById('nombreD').value = nombre;
+            document.getElementById('descripcionD').value = descripcion;
+            document.getElementById('duracionD').value = duracionMinutos;
+            document.getElementById('precioD').value = precio;
+            document.getElementById('categoriaD').value = categoria;
+        }
+
+        async function eliminarDatos() {
+            const nombreEliminar = document.getElementById('nombreD').value;
+            const descripcionEliminar = document.getElementById('descripcionD').value;
+            const duracionEliminar = document.getElementById('duracionD').value;
+            const precioEliminar = document.getElementById('precioD').value;
+            const categoriaEliminar = document.getElementById('categoriaD').value;
+
+            try {
+                const respuesta = await fetch(`/servicios/${nombreEliminar}`, {
+                    method: 'DELETE'
+                });
+                if (respuesta.ok) {
+                    alert('¡Datos eliminados con exito!');
+                    window.location.reload();
+                } else {
+                    alert('Error en el servidor al intentar eliminar los datos.');
+                }
+            } catch (error) {
+                console.error('error de conexion:', error);
+            }
+        }
+    </script>
+
+</body>
+</html>
