@@ -2,10 +2,13 @@ const express = require('express')
 const router = express.Router();
 const clienteController = require('../controllers/cliente.controllers')
 const servicioController = require('../controllers/servicio.controllers')
+const usuarioController = require('../controllers/usuario.controllers')
 
 router.get('/', clienteController.home)
 
 router.get('/formulario', clienteController.formulario) 
+
+router.get('/landingpage', usuarioController.landingpage)
 
 // servicios
 
@@ -22,5 +25,7 @@ router.get('/clientes/:correo', clienteController.consultarId)
 router.post('/clientes', clienteController.insert)
 router.put('/clientes', clienteController.update)
 router.delete('/clientes', clienteController.delete)
+
+router.post('/enviar', usuarioController.contactar)
 
 module.exports = router;

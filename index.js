@@ -26,7 +26,6 @@ app.delete('/servicios/:nombre', servicioController.delete)
 
 //clientes
 
-app.get('/clientes', clienteController.listar);
 
 app.get('/clientes/:correo', clienteController.consultarId);
 

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head'); %>
+</head>
+<body>
+
+    <header>
+        <%- include('../partials/header'); %>
+    </header>
+    
+    <main>
+        <form action="/api/v1/enviar" method="post">
+            <div class="mb-3 mt-3">
+                <label for="email" class="form-label">Asunto:</label>
+                <input type="text" class="form-control" id="asunto" placeholder="Enter email" name="asunto">
+            </div>
+            <div class="mb-3 mt-3">
+                <label for="email" class="form-label">Email:</label>
+                <input type="email" class="form-control" id="mail" placeholder="Enter email" name="mail">
+            </div>
+            <div class="mb-3 mt-3">
+                <label for="comment">Comments:</label>
+                <textarea class="form-control" rows="5" id="comment" name="comment"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </main>
+
+    <footer>
+        <%- include('../partials/footer'); %>
+    </footer>
+
+</body>
+</html>

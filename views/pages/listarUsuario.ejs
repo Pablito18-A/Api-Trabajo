@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head'); %>
+</head>
+<body>
+    <header>
+        <%- include('../partials/header'); %>
+    </header>
+
+    <main>
+         <div class="jumbotron">
+            <h1>Clientes</h1>
+                <table id="clientes" class="table table-striped">
+                    <thead>
+                        <th>Email</th>
+                        <th>Rol</th>
+                    </thead>
+                    <tbody>
+                        <% usuarios.forEach(function(usuario) { %>
+                            <tr>
+                                <td><%=usuario.email%></td>
+                                <td><%=usuario.rol%></td>
+                                <td>
+                                    <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modalDetalle" onclick="modalVer('<%=cliente.nombre%>', '<%= cliente.email%>','<%=cliente.telefono%>')">ver detalle</button>
+                                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalEditar" onclick="modalEditar('<%=cliente.nombre%>', '<%= cliente.email%>','<%=cliente.telefono%>')">editar</button>
+                                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalEliminar" onclick="modalEliminar('<%=cliente.nombre%>', '<%= cliente.email%>','<%=cliente.telefono%>')">eliminar</button>
+                                </td>
+                            </tr>   
+
+                        <% }); %>
+                    </tbody>
+                </table>
+        </div>
+    </main>
+
+    <footer>
+        <%- include('../partials/footer'); %>
+    </footer>
+</body>
+</html>

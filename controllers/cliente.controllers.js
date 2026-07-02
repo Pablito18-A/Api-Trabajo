@@ -3,6 +3,7 @@ const modeloCliente = require('../models/cliente.model');
 exports.listar = async (req,res)=>{
   try {
     const clientes = await modeloCliente.find();
+    console.log(clientes)
     res.render('pages/clientes', {clientes:clientes});
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -18,7 +19,7 @@ exports.consultarId = async (req, res) => {
   }
 }
 
-exports.insert = async (req, res) => {
+exports.insert = async (req, res,next) => {
   try {
     let clientesNuevo = {
       nombre: req.body.nombre,
@@ -26,7 +27,7 @@ exports.insert = async (req, res) => {
       telefono: req.body.telefono
     }
     const clientes = await modeloCliente.insertOne(clientesNuevo);
-    res.render('pages/clientes', {mensaje:"Registrado exitosamente"})
+    res.redirect('/api/v1/clientes')
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
