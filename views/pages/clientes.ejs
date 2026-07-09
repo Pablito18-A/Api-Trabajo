@@ -181,7 +181,7 @@
             const telefonoNuevo = document.getElementById('telefonoE').value;
 
             try {
-                const respuesta = await fetch(`/clientes/${email}`, {
+                const respuesta = await fetch(`/api/v1/clientes/${email}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json' 
@@ -216,7 +216,7 @@
             const telefonoEliminar = document.getElementById('telefonoD').value;
 
             try {
-                const respuesta = await fetch(`/clientes/${emailEliminar}`, {
+                const respuesta = await fetch(`/api/v1/clientes/${emailEliminar}`, {
                     method: 'DELETE'
                 })
                 if (respuesta.ok) {

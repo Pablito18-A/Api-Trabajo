@@ -8,6 +8,8 @@ router.get('/', clienteController.home)
 
 router.get('/formulario', clienteController.formulario) 
 
+router.get('/formularioServicios', servicioController.formulario) 
+
 router.get('/landingpage', usuarioController.landingpage)
 
 // servicios
@@ -23,8 +25,8 @@ router.delete('/servicios/:nombre', servicioController.delete)
 router.get('/clientes', clienteController.listar)
 router.get('/clientes/:correo', clienteController.consultarId)
 router.post('/clientes', clienteController.insert)
-router.put('/clientes', clienteController.update)
-router.delete('/clientes', clienteController.delete)
+router.put('/clientes/:correo', clienteController.update)
+router.delete('/clientes/:correo', clienteController.delete)
 
 router.post('/enviar', usuarioController.contactar)
 

@@ -1,4 +1,5 @@
 const modeloCliente = require('../models/cliente.model');
+const { sendEmail } = require('../services/email.service')
 
 exports.listar = async (req,res)=>{
   try {
@@ -21,12 +22,18 @@ exports.consultarId = async (req, res) => {
 
 exports.insert = async (req, res,next) => {
   try {
+    const { nombre, email, telefono } = req.body
+
     let clientesNuevo = {
       nombre: req.body.nombre,
       email: req.body.email,
       telefono: req.body.telefono
     }
+
     const clientes = await modeloCliente.insertOne(clientesNuevo);
+    const asunto = "Bienvenido a nuestro sistema";
+    const mensaje = `Bienvenido ${nombre} al sistema de la ficha 3194107`
+     await sendEmail(email, asunto, mensaje)
     res.redirect('/api/v1/clientes')
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -35,24 +42,27 @@ exports.insert = async (req, res,next) => {
 
 exports.update = async (req, res) => {
   try {
-    // 1. Extraemos el correo de la URL (ej. /clientes/juan@email.com)
-    const emailBuscar = req.params.correo; 
-    
-    // 2. Extraemos los nuevos datos que nos envía el frontend
+    const emailBuscar = req.params.correo;
+    const { nombre, telefono } = req.body
+
     let datosActualizados = {
       nombre: req.body.nombre,
       telefono: req.body.telefono
     };
 
-    // 3. Buscamos y actualizamos en la base de datos
-    // IMPORTANTE: { new: true } le dice a Mongoose que te devuelva el dato YA modificado.
+    const asunto = "Actualizacion de datos exitosa";
+    const mensaje = `Hola ${nombre}, te confirmamos que tus datos de contacto (Telefono: ${telefono}) han sido actualizados en nuestro sistema`;
+
+    await sendEmail(emailBuscar, asunto, mensaje)
+
     const clienteActualizado = await modeloCliente.findOneAndUpdate(
       { email: emailBuscar },
       { $set: datosActualizados },
       { new: true } 
     );
 
-    res.json(clienteActualizado); // Respondemos al frontend que todo salió bien
+    console.log(clienteActualizado)
+    res.json(clienteActualizado);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -63,6 +73,10 @@ exports.delete = async (req, res) => {
   try {
     const emailBuscar = req.params.correo;
     console.log("Buscando en BD el email:", emailBuscar);
+    const asunto = "Eliminaste tu cuenta con exito";
+    const mensaje = `Eliminaste tu cuenta con el correo asociado ${emailBuscar}, espereamos que vuelvas :D`;
+
+    await sendEmail(emailBuscar, asunto, mensaje);
     const clientes = await modeloCliente.deleteOne(
       { email: emailBuscar }
     );
