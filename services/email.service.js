@@ -4,10 +4,11 @@ const nodemailer = require("nodemailer");
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: `${process.env.MAIL}`,
+    user: `${process.env.MIMAIL}`,
     pass: `${process.env.GPASS}`,
   },
-});
+})
+console;
 
 exports.sendEmail = async (email, subject, text) => {
   const mailOptions = {
