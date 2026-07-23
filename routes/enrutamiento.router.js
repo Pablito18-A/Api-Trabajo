@@ -3,6 +3,7 @@ const router = express.Router();
 const clienteController = require('../controllers/cliente.controllers')
 const servicioController = require('../controllers/servicio.controllers')
 const usuarioController = require('../controllers/usuario.controllers')
+const catalogoController = require('../controllers/catalogo.controllers')
 
 router.get('/', clienteController.home)
 
@@ -11,6 +12,10 @@ router.get('/formulario', clienteController.formulario)
 router.get('/formularioServicios', servicioController.formulario) 
 
 router.get('/landingpage', usuarioController.landingpage)
+
+// catalogo
+
+router.get('/catalogo', catalogoController.listar)
 
 // servicios
 
